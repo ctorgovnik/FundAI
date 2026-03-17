@@ -1,0 +1,36 @@
+# Secrets — never commit these
+.envrc
+.env
+*.pem
+*.key
+
+# CMake build artifacts
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.o
+*.a
+*.so
+*.dylib
+compile_commands.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+dist/
+*.egg-info/
+.pytest_cache/
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo

@@ -1,0 +1,10 @@
+# Copy this file to .envrc and fill in your values
+# Run `direnv allow` once after creating .envrc
+# .envrc is gitignored — never commit real secrets
+
+export GITHUB_PAT="ghp_your_token_here"
+export ANTHROPIC_API_KEY="sk-ant-your_key_here"
+
+# Future keys (uncomment when needed)
+# export BROKER_API_KEY=""
+# export MARKET_DATA_API_KEY=""
