@@ -14,3 +14,6 @@ add_executable(ipc_test
 )
 
 target_link_libraries(ipc_test PRIVATE ipc gtest gtest_main)
+
+include(GoogleTest)
+gtest_discover_tests(ipc_test)
