@@ -9,12 +9,17 @@ build/
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
+CTestTestfile.cmake
 Makefile
 *.o
 *.a
 *.so
 *.dylib
 compile_commands.json
+
+# Nix / direnv
+.cache/
+.direnv/
 
 # Python
 __pycache__/
