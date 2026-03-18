@@ -31,6 +31,7 @@
           ];
 
           shellHook = ''
+            export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
             echo "FundAI dev shell"
             echo "  cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug"
             echo "  cmake --build build"

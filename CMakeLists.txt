@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(fund_os LANGUAGES C CXX)
+project(fund_ai LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -20,5 +20,5 @@ enable_testing()
 add_subdirectory(abi)
 add_subdirectory(ipc)
 add_subdirectory(tests)
-# add_subdirectory(fund)
+add_subdirectory(fund)
 
