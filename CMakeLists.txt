@@ -20,5 +20,5 @@ enable_testing()
 add_subdirectory(abi)
 add_subdirectory(ipc)
 add_subdirectory(tests)
-add_subdirectory(fund)
+# add_subdirectory(fund)  # uncomment when fund/ is ready (requires Boost)
 

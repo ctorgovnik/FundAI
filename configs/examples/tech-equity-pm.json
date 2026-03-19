@@ -1,0 +1,16 @@
+{
+  "agent_id": "tech-equity-pm",
+  "version": 1,
+  "tradeable_instruments": ["AAPL", "MSFT", "NVDA", "GOOGL"],
+  "observable_instruments": ["BTC-USD", "polymarket:will-fed-cut-rates-q1"],
+  "risk_limits": {
+    "max_position_pct": 0.20,
+    "max_drawdown_pct": 0.10
+  },
+  "research_focus": "technology sector equities",
+  "research_trigger": "on_open",
+  "capital_allocation": {
+    "starting_cash": 1000000,
+    "max_pct_of_fund": 0.30
+  }
+}
