@@ -20,6 +20,7 @@
             ninja
             clang
             clang-tools   # clangd, clang-format, clang-tidy
+            boost
 
             # Python
             python312

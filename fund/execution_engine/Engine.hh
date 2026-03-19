@@ -2,6 +2,8 @@
 
 #include "config.hh"
 
+#include <boost/asio.hpp>
+
 namespace fund {
 
 class Engine {
@@ -11,6 +13,7 @@ public:
 
 private:
     Config config_;
+    boost::asio::io_context io_; 
 };
 
 }
