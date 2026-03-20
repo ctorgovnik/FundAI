@@ -16,7 +16,7 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update -q
-          sudo apt-get install -y cmake build-essential
+          sudo apt-get install -y cmake build-essential libboost-dev
 
       - name: Configure (CMake)
         run: cmake -B build -DCMAKE_BUILD_TYPE=Debug
