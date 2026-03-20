@@ -5,7 +5,9 @@ extern "C"{
 }
 
 #include <sys/mman.h>
+#include <chrono>
 #include <iostream>
+#include <thread>
 
 struct FundData {
   int instrument_id;
@@ -47,17 +49,29 @@ public:
     std::cout << "Closed shared memory" << std::endl;
   }
 
-  void dispatch_data(const int& instrument_id, const double& close_price){
-    
+  // Writes one item, blocking until space is available (up to timeout_ms).
+  // Returns true on success, false on timeout.
+  bool dispatch_data(const int& instrument_id, const double& close_price,
+                     int timeout_ms = 5000) {
     FundData data{instrument_id, close_price};
 
-    int result = rb_write(&fund_data, &data);
-    
-    if (result == 0){
-      std::cout << "Fund wrote instrumend id " << instrument_id << " with close price "
-        << close_price << " to shared mem\n";
-    } else {
-      std::cout << "Ring Buffer full. Waiting for reader.\n";
+    auto deadline = std::chrono::steady_clock::now() +
+                    std::chrono::milliseconds(timeout_ms);
+
+    while (true) {
+      if (rb_write(&fund_data, &data) == 0) {
+        std::cout << "Fund wrote instrument_id=" << instrument_id
+                  << " close_price=" << close_price << "\n";
+        return true;
+      }
+
+      if (std::chrono::steady_clock::now() >= deadline) {
+        std::cerr << "Timeout: ring buffer full after " << timeout_ms
+                  << "ms (instrument_id=" << instrument_id << ")\n";
+        return false;
+      }
+
+      std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
   }
 
@@ -77,7 +91,9 @@ int main(int argc, char *argv[]){
   double close_price = 1.0;
   
   for (int i = 0; i < 10; i++){
-    fund.dispatch_data(instrument_id, close_price);
+    if (!fund.dispatch_data(instrument_id, close_price)) {
+      return 1;
+    }
     instrument_id++;
     close_price += 2;
   }
