@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  # ── Stage 1: Build everything and run unit tests ───────────────────────────
+  build-and-unit-test:
+    name: Build & Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y cmake build-essential libboost-dev
+
+      - name: Configure (CMake)
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Debug
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Unit tests
+        run: ctest --test-dir build --output-on-failure
+
+      - name: Upload build binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-binaries
+          # Captures all compiled executables produced by CMake.
+          path: build/bin/
+          retention-days: 1
+
+  # ── Stage 2: Integration tests (uses binaries from Stage 1) ────────────────
+  integration-test:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: build-and-unit-test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python test dependencies
+        run: pip install pytest
+
+      - name: Download build binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: build-binaries
+          path: build/bin/
+
+      - name: Restore executable permissions
+        run: chmod +x build/bin/*
+
+      - name: Run C++ integration tests
+        # Discovers every integration test directory that has a run.sh and
+        # executes it, passing the build directory as the first argument.
+        run: |
+          set -e
+          for dir in tests/integration/*/; do
+            if [[ -f "$dir/run.sh" ]]; then
+              echo ""
+              echo "── $dir ──"
+              bash "$dir/run.sh" build
+            fi
+          done
+
+      - name: Python agent unit tests
+        run: pytest agents/tests/ -v
+        env:
+          PYTHONPATH: ${{ github.workspace }}
