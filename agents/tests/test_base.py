@@ -14,12 +14,9 @@ import logging
 import pytest
 from pathlib import Path
 
-from agents.base import (
-    AgentActionV1,
-    AgentConfigV1,
-    AgentProcess,
-    FundStateV1,
-)
+from agents.base import AgentProcess
+from agents.config import AgentConfigV1
+from agents.types import AgentActionV1, FundStateV1
 
 
 # ---------------------------------------------------------------------------
@@ -132,7 +129,7 @@ class TestConfigLoading:
         bad = tmp_path / "bad.json"
         bad.write_text("{not valid json")
         agent = PassthroughAgent(str(bad))
-        with pytest.raises(Exception):
+        with pytest.raises(json.JSONDecodeError):
             agent.start()
 
     def test_missing_required_field_raises(self, tmp_path: Path) -> None:
