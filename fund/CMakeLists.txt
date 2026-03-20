@@ -1,3 +1,4 @@
+add_subdirectory(feed_handler)
 add_subdirectory(execution_engine)
 
 add_executable(fund_os main.cc)

@@ -1,5 +1,3 @@
-find_package(Boost REQUIRED)
-
 add_library(engine Engine.cc)
 
 target_include_directories(engine
@@ -7,4 +5,4 @@ target_include_directories(engine
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/..
 )
 
-target_link_libraries(engine PUBLIC Boost::headers)
+target_link_libraries(engine PUBLIC feed_handler)

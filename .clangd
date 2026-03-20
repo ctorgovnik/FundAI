@@ -1,0 +1,7 @@
+CompileFlags:
+  Remove:
+    - -isysroot
+    - /nix/store/*
+    - -mmacosx-version-min=*
+  Add:
+    - -isysroot/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk

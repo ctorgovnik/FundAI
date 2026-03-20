@@ -18,14 +18,8 @@ jobs:
           sudo apt-get update -q
           sudo apt-get install -y cmake build-essential libboost-dev
 
-      - name: Configure (CMake)
-        run: cmake -B build -DCMAKE_BUILD_TYPE=Debug
-
-      - name: Build
-        run: cmake --build build --parallel
-
-      - name: Unit tests
-        run: ctest --test-dir build --output-on-failure
+      - name: Build & test
+        run: bash scripts/build.sh build
 
       - name: Upload build binaries
         uses: actions/upload-artifact@v4
